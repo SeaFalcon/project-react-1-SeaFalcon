@@ -10,6 +10,7 @@ const albums = [
     releaseDate: 'Jul 31, 2020',
     fullImage: 'https://www.metalkingdom.net/album/cover/2020/07/5/141179-Septicflesh-Infernus-Sinfonica-MMXIX.jpg',
     thumbnail: 'https://www.metalkingdom.net/thumb/album2/2020/07/5/141179.jpg',
+    metalkingdomUrl: 'https://www.metalkingdom.net/album/septicflesh-infernus-sinfonica-mmxix-141179',
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const albums = [
     releaseDate: 'Feb 21, 2020',
     fullImage: 'https://www.metalkingdom.net/album/cover/2020/01/5/133088-HEAT-HEAT-II.jpg',
     thumbnail: 'https://www.metalkingdom.net/thumb/album2/2020/01/5/133088.jpg',
+    metalkingdomUrl: 'http://metalkingdom.net/album/h.e.a.t-h.e.a.t-ii-133088',
   },
 ];
 
