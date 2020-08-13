@@ -1,12 +1,16 @@
 import React from 'react';
 
+import { MemoryRouter } from 'react-router-dom';
+
 import { render } from '@testing-library/react';
 
-import App from './App';
+import Header from './Header';
 
-test('App', () => {
+test('Header', () => {
   const { container } = render((
-    <App />
+    <MemoryRouter>
+      <Header />
+    </MemoryRouter>
   ));
 
   expect(container).toHaveTextContent('Album Of The Year');
