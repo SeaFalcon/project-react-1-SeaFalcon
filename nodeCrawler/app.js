@@ -4,6 +4,8 @@ const albumInfomations = require('./AlbumOfTheYear[1970-2020].json');
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 function filterAlbums(page, limit) {
   return (album) => album.rank > limit * (page - 1)
     && album.rank <= limit * (page - 1) + limit;
@@ -51,7 +53,9 @@ app.get('/albumoftheyear', (req, res) => {
     year,
   });
 
+  console.log('requested!');
+
   res.json(result);
 });
 
-app.listen(3000, () => { console.log('listening 3000 port...'); });
+app.listen(PORT, () => { console.log('listening 3000 port...'); });

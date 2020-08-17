@@ -1,21 +1,17 @@
 import React from 'react';
 
+import { useSelector } from 'react-redux';
+
 import { render } from '@testing-library/react';
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import App from './App';
+import AlbumOfTheYearContainer from './AlbumOfTheYearContainer';
 
 import albums from '../fixtures/albums';
 
 jest.mock('react-redux');
 
-describe('App', () => {
+describe('AlbumOfTheYearContainer', () => {
   it('renders initial page', () => {
-    const dispatch = jest.fn();
-
-    useDispatch.mockImplementation(() => dispatch);
-
     useSelector.mockImplementation((selector) => selector({
       currentYear: 2020,
       albums: {
@@ -24,9 +20,9 @@ describe('App', () => {
     }));
 
     const { container } = render((
-      <App />
+      <AlbumOfTheYearContainer />
     ));
 
-    expect(container).toHaveTextContent('Album Of The Year');
+    expect(container).toHaveTextContent('H.E.A.T');
   });
 });

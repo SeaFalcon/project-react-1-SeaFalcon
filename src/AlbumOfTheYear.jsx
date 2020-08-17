@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
 
@@ -66,30 +66,17 @@ const Album = styled.span({
 const Year = styled.div({
   marginTop: '30px',
   marginLeft: '30px',
-  fontSize: '1.5em'
-})
+  fontSize: '1.5em',
+});
 
-export default function AlbumOfTheYear() {
+export default function AlbumOfTheYear({ albums, year }) {
   const baseUrl = 'https://www.metalkingdom.net';
-  const [state, setState] = useState([]);
-  const [year, setYear] = useState(0);
-
-  useEffect(() => {
-    async function getAlbums() {
-      const response = await fetch('http://localhost:3000/albumoftheyear?year=2020');
-      const { data, data: { albums } } = await response.json();
-      console.log(albums);
-      setState(albums);
-      setYear(data.year);
-    }
-    getAlbums();
-  }, []);
 
   return (
     <div>
       <Year>{year}</Year>
       <Grid>
-        {state.map((album) => (
+        {albums[year].map((album) => (
           <Container key={album.rank}>
             <a href={`${baseUrl}${album.detailUrl}`} target="_blank" rel="noreferrer">
               <ImageContainer>
@@ -97,7 +84,7 @@ export default function AlbumOfTheYear() {
                 <Rating>
                   <p>
                     Rank:
-                  {' '}
+                    {' '}
                     {album.rank}
                   </p>
                   <p>
@@ -105,11 +92,11 @@ export default function AlbumOfTheYear() {
                   </p>
                   <span role="img" aria-label="rating">
                     ⭐️
-                </span>
+                  </span>
                   {' '}
                   {album.rating}
-                /100
-              </Rating>
+                  /100
+                </Rating>
               </ImageContainer>
               <Artist>{album.artist}</Artist>
               <Album>{album.album}</Album>

@@ -3,9 +3,9 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Header from './Header';
-import AlbumOfTheYear from './AlbumOfTheYear';
 import Search from './Search';
 import GlobalStyles from './GlobalStyles';
+import AlbumOfTheYearPage from './AlbumOfTheYearPage';
 
 export default function App() {
   return (
@@ -13,7 +13,7 @@ export default function App() {
       <BrowserRouter>
         <Header />
         <Switch>
-          <Route exact path="/" component={AlbumOfTheYear} />
+          <Route exact path="/" component={AlbumOfTheYearPage} />
           <Route path="/search" component={Search} />
         </Switch>
       </BrowserRouter>
