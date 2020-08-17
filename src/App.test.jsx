@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { MemoryRouter } from 'react-router-dom';
+
 import { render } from '@testing-library/react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,8 +13,10 @@ import albums from '../fixtures/albums';
 jest.mock('react-redux');
 
 describe('App', () => {
-  it('renders initial page', () => {
-    const dispatch = jest.fn();
+  const dispatch = jest.fn();
+
+  beforeEach(() => {
+    dispatch.mockClear();
 
     useDispatch.mockImplementation(() => dispatch);
 
@@ -22,11 +26,29 @@ describe('App', () => {
         2020: albums,
       },
     }));
+  });
 
-    const { container } = render((
-      <App />
+  function renderApp({ path }) {
+    return render((
+      <MemoryRouter initialEntries={[path]}>
+        <App />
+      </MemoryRouter>
     ));
+  }
 
-    expect(container).toHaveTextContent('Album Of The Year');
+  context('with path /', () => {
+    it('renders initial page', () => {
+      const { container } = renderApp({ path: '/' });
+
+      expect(container).toHaveTextContent('Album Of The Year');
+    });
+  });
+
+  context('with path /search', () => {
+    it('renders search page', () => {
+      const { container } = renderApp({ path: '/search' });
+
+      expect(container).toHaveTextContent('Search');
+    });
   });
 });

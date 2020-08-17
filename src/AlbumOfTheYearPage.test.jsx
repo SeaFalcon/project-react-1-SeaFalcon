@@ -27,4 +27,6 @@ test('AlbumOfTheYearPage', () => {
   ));
 
   expect(container).toHaveTextContent('2020');
+
+  expect(dispatch).toBeCalled();
 });

@@ -14,4 +14,5 @@ test('Header', () => {
   ));
 
   expect(container).toHaveTextContent('Album Of The Year');
+  expect(container).toHaveTextContent('Search');
 });

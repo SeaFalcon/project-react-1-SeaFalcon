@@ -15,10 +15,12 @@ describe('AlbumOfTheYear', () => {
       [currentYear]: albums,
     };
 
-    const { container } = render((
+    const { container, getByText } = render((
       <AlbumOfTheYear albums={currentYearAlbums} year={currentYear} />
     ));
 
     expect(container).toHaveTextContent('H.E.A.T');
+
+    expect(getByText('H.E.A.T').parentElement).toHaveAttribute('href', `https://www.metalkingdom.net${currentYearAlbums[currentYear][1].detailUrl}`);
   });
 });
