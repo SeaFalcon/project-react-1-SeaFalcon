@@ -20,10 +20,18 @@ describe('AlbumOfTheYear', () => {
     handleScroll.mockClear();
   });
 
-  it('renders initial page', () => {
-    const { container, getByText } = render((
-      <AlbumOfTheYear albums={currentYearAlbums[currentYear]} year={currentYear} onScroll={handleScroll} />
+  function renderAlbumOfTheYear() {
+    return render((
+      <AlbumOfTheYear
+        albums={currentYearAlbums[currentYear]}
+        year={currentYear}
+        onScroll={handleScroll}
+      />
     ));
+  }
+
+  it('renders initial page', () => {
+    const { container, getByText } = renderAlbumOfTheYear();
 
     expect(container).toHaveTextContent('H.E.A.T');
 
@@ -31,9 +39,7 @@ describe('AlbumOfTheYear', () => {
   });
 
   it('occurs scroll events', () => {
-    const { container } = render((
-      <AlbumOfTheYear albums={currentYearAlbums[currentYear]} year={currentYear} onScroll={handleScroll} />
-    ));
+    const { container } = renderAlbumOfTheYear();
 
     const grid = container.querySelector('#grid');
 

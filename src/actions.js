@@ -15,15 +15,20 @@ export function setAvailableYears(years) {
 }
 
 export function loadInitialData({ year, page, limit } = {}) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    if (getState().albums[year]) return;
+
     const {
       data: { albums },
       data: { year: albumYear },
     } = await fetchAlbums({ year, page, limit });
 
+    dispatch(setAlbums({ year: albumYear, albums }));
+
+    if (getState().availableYears.length) return;
+
     const years = await fetchAvailableYears();
 
-    dispatch(setAlbums({ year: albumYear, albums }));
     dispatch(setAvailableYears(years));
   };
 }
