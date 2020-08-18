@@ -5,8 +5,11 @@ import { useSelector } from 'react-redux';
 import AlbumOfTheYear from './AlbumOfTheYear';
 import LoadingPage from './LoadingPage';
 
+import { isEmptyObject, get } from './utils';
+
 export default function AlbumOfTheYearContainer() {
-  const { albums, currentYear } = useSelector((state) => state);
+  const albums = useSelector(get('albums'));
+  const year = useSelector(get('currentYear'));
 
   function handleScroll(e) {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
@@ -16,8 +19,8 @@ export default function AlbumOfTheYearContainer() {
     }
   }
 
-  if (albums && currentYear) {
-    return <AlbumOfTheYear albums={albums} year={currentYear} onScroll={handleScroll} />;
+  if (!isEmptyObject(albums)) {
+    return <AlbumOfTheYear albums={albums} year={year} onScroll={handleScroll} />;
   }
 
   return <LoadingPage />;

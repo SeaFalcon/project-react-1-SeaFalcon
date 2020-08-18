@@ -1,6 +1,8 @@
 const initialState = {
   albums: {},
-  currentYear: null,
+  currentYear: new Date().getFullYear(),
+  currentPage: 1,
+  currentLimit: 20,
 };
 
 const reducers = {
