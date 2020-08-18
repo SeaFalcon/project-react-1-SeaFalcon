@@ -1,4 +1,5 @@
 import { fetchAlbums, fetchAvailableYears } from './services/api';
+import { isEmptyObject } from './utils';
 
 export function setAlbums({ year, albums }) {
   return {
@@ -7,29 +8,43 @@ export function setAlbums({ year, albums }) {
   };
 }
 
-export function setAvailableYears(years) {
+export function initializeAvailableYears(years) {
   return {
-    type: 'setAvailableYears',
+    type: 'initializeAvailableYears',
     payload: { years },
   };
 }
 
-export function loadInitialData({ year, page, limit } = {}) {
+export function loadInitialData(year) {
   return async (dispatch, getState) => {
-    if (getState().albums[year]) return;
+    const { currentPage, currentLimit, albums: previousAlbums } = getState();
+
+    if (previousAlbums[year]) return;
 
     const {
-      data: { albums },
-      data: { year: albumYear },
-    } = await fetchAlbums({ year, page, limit });
+      data: { albums, year: albumYear },
+    } = await fetchAlbums({ year, page: currentPage, limit: currentLimit });
 
     dispatch(setAlbums({ year: albumYear, albums }));
+  };
+}
 
-    if (getState().availableYears.length) return;
+export function loadYearInfomation() {
+  return async (dispatch, getState) => {
+    const { availableYears } = getState();
+
+    if (!isEmptyObject(availableYears)) return;
 
     const years = await fetchAvailableYears();
 
-    dispatch(setAvailableYears(years));
+    dispatch(initializeAvailableYears(years));
+  };
+}
+
+export function updateAvailableYearsEndOfPage(endOfPage) {
+  return {
+    type: 'updateAvailableYearsEndOfPage',
+    payload: { endOfPage },
   };
 }
 
@@ -43,5 +58,35 @@ export function setYear(year) {
 export function changeDropDownIsOpen() {
   return {
     type: 'changeDropDownIsOpen',
+  };
+}
+
+export function setPage(page) {
+  return {
+    type: 'setPage',
+    payload: { page },
+  };
+}
+
+export function loadMoreData() {
+  return async (dispatch, getState) => {
+    const {
+      availableYears, currentYear, currentLimit,
+    } = getState();
+
+    const { page, endOfPage } = availableYears[currentYear];
+
+    if (endOfPage !== 0) return;
+
+    const {
+      data: { albums, albumCount, year: albumYear },
+    } = await fetchAlbums({ year: currentYear, page: page + 1, limit: currentLimit });
+
+    dispatch(setAlbums({ year: albumYear, albums }));
+    dispatch(setPage(page + 1));
+
+    if (albums.find((album) => +album.rank === albumCount)) {
+      dispatch(updateAvailableYearsEndOfPage(page + 1));
+    }
   };
 }

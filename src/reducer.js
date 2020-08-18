@@ -3,7 +3,7 @@ const initialState = {
   currentYear: new Date().getFullYear(),
   currentPage: 1,
   currentLimit: 30,
-  availableYears: [],
+  availableYears: {},
   dropDownIsOpen: false,
 };
 
@@ -14,15 +14,39 @@ const reducers = {
       currentYear: year,
       albums: {
         ...state.albums,
-        [year]: albums,
+        [year]:
+          Object.keys(state.albums).find((album) => album === String(year))
+            ? [...state.albums[year], ...albums]
+            : albums,
       },
     };
   },
 
-  setAvailableYears(state, { payload: { years } }) {
+  initializeAvailableYears(state, { payload: { years } }) {
+    const availableYears = {};
+
+    years.forEach((year) => {
+      availableYears[year] = { page: 1, endOfPage: 0 };
+    });
+
     return {
       ...state,
-      availableYears: years,
+      availableYears,
+    };
+  },
+
+  updateAvailableYearsEndOfPage(state, { payload: { endOfPage } }) {
+    const { availableYears, currentYear } = state;
+
+    return {
+      ...state,
+      availableYears: {
+        ...availableYears,
+        [currentYear]: {
+          ...availableYears[currentYear],
+          endOfPage,
+        },
+      },
     };
   },
 
@@ -37,6 +61,22 @@ const reducers = {
     return {
       ...state,
       dropDownIsOpen: !state.dropDownIsOpen,
+    };
+  },
+
+  setPage(state, { payload: { page } }) {
+    const { availableYears, currentYear } = state;
+
+    return {
+      ...state,
+      currentPage: page,
+      availableYears: {
+        ...availableYears,
+        [currentYear]: {
+          ...availableYears[currentYear],
+          page,
+        },
+      },
     };
   },
 };

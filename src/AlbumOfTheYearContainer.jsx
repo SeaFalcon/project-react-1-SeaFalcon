@@ -1,13 +1,17 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AlbumOfTheYear from './AlbumOfTheYear';
 import LoadingPage from './LoadingPage';
 
+import { loadMoreData } from './actions';
+
 import { isEmptyObject, get } from './utils';
 
 export default function AlbumOfTheYearContainer() {
+  const dispatch = useDispatch();
+
   const albums = useSelector(get('albums'));
   const year = useSelector(get('currentYear'));
   const availableYears = useSelector(get('availableYears'));
@@ -17,7 +21,7 @@ export default function AlbumOfTheYearContainer() {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
 
     if (scrollTop + clientHeight === scrollHeight) {
-      // todo...
+      dispatch(loadMoreData());
     }
   }
 

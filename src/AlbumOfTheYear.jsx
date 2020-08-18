@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
-import { setYear, changeDropDownIsOpen } from './actions';
+import { setYear, changeDropDownIsOpen, setPage } from './actions';
 
 const MainContainer = styled.div({
   // height: '120vh',
@@ -68,8 +68,6 @@ const Album = styled.span({
   display: 'block',
 });
 
-/// ////////
-
 const DropDownContainer = styled.div({
   display: 'flex',
   overflow: 'auto',
@@ -133,14 +131,12 @@ const ListItem = styled.li((props) => ({
   },
 }));
 
-/// ////////
-
 export default function AlbumOfTheYear({
   albums, year, availableYears, onScroll, isOpen,
 }) {
   const baseUrl = 'https://www.metalkingdom.net';
 
-  /// ////////////////////
+  const years = Object.keys(availableYears).reverse();
 
   const dispatch = useDispatch();
 
@@ -151,10 +147,12 @@ export default function AlbumOfTheYear({
   const onOptionClicked = (value) => {
     dispatch(setYear(value));
 
+    const { page } = availableYears[value];
+
+    dispatch(setPage(page));
+
     dispatch(changeDropDownIsOpen());
   };
-
-  /// ////////////////////
 
   return (
     <MainContainer>
@@ -162,9 +160,9 @@ export default function AlbumOfTheYear({
       <DropDownContainer>
         <DropDownHeader onClick={handleToggle} isOpen={isOpen}>{year}</DropDownHeader>
         {isOpen && (
-          <DropDownListContainer onClick={handleToggle}>
+          <DropDownListContainer>
             <DropDownList>
-              {availableYears.map((availableYear) => (
+              {years.map((availableYear) => (
                 <ListItem
                   onClick={() => onOptionClicked(availableYear)}
                   key={Math.random()}
