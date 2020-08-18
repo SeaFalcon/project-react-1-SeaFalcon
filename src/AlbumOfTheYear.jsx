@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
+import { useDispatch } from 'react-redux';
+import { setYear, changeDropDownIsOpen } from './actions';
 
 const MainContainer = styled.div({
   // height: '120vh',
 });
 
 const Grid = styled.div({
-  padding: '20px',
-  marginTop: '10px',
+  // padding: '20px',
+  // marginTop: '10px',
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, 200px)',
   gridGap: '25px',
   overflow: 'auto',
-  height: '67vh',
+  height: '80vh',
   justifyContent: 'space-evenly',
 });
 
@@ -66,20 +68,118 @@ const Album = styled.span({
   display: 'block',
 });
 
-const Year = styled.div({
-  marginTop: '30px',
-  marginLeft: '30px',
-  fontSize: '1.5em',
+/// ////////
+
+const DropDownContainer = styled.div({
+  display: 'flex',
+  overflow: 'auto',
+  width: '100%',
+  height: '10vh',
+  alignItems: 'center',
 });
 
-export default function AlbumOfTheYear({ albums, year, onScroll }) {
+const DropDownHeader = styled.div((props) => ({
+  // marginBottom: '0.8em',
+  padding: '0 1em',
+  boxShadow: '0 2px 3px rgba(0, 0, 0, 0.15)',
+  fontWeight: '500',
+  fontSize: '1.5rem',
+  color: 'white', // '#3faffa',
+  // background: '#ffffff',
+  display: `${props.isOpen ? 'none' : 'flex'}`,
+  justifyContent: 'center',
+  alignItems: 'center',
+  '&:hover': {
+    cursor: 'pointer',
+    color: 'rgba(255,255,255,0.5)',
+    transition: 'color 0.3s ease-in-out',
+  },
+}));
+
+const DropDownListContainer = styled.div({
+  // height: '15vh',
+  // overflow: 'auto',
+});
+
+const DropDownList = styled.ul({
+  padding: '0',
+  margin: '0',
+  paddingLeft: '1em',
+  // background: '#ffffff',
+  // border: '2px solid #e5e5e5',
+  boxSizing: 'border-box',
+  // color: '#3498db', // '#3faffa',
+  // fontSize: '1.3rem',
+  // fontWeight: '500',
+  '&:first-of-type': {
+    paddingTop: '1.2em',
+  },
+  display: 'flex',
+  flexDirection: 'row',
+  // overflow: 'auto',
+  flexWrap: 'wrap',
+});
+
+const ListItem = styled.li((props) => ({
+  listStyle: 'none',
+  marginBottom: '0.8em',
+  paddingRight: '10px',
+  color: `${props.selected ? '#3faffa' : ''}`,
+  fontWeight: `${props.selected ? '700' : ''}`,
+  '&:hover': {
+    cursor: 'pointer',
+    color: 'rgba(255,255,255,0.5)',
+    transition: 'color 0.3s ease-in-out',
+  },
+}));
+
+/// ////////
+
+export default function AlbumOfTheYear({
+  albums, year, availableYears, onScroll, isOpen,
+}) {
   const baseUrl = 'https://www.metalkingdom.net';
+
+  /// ////////////////////
+
+  const dispatch = useDispatch();
+
+  const handleToggle = () => {
+    dispatch(changeDropDownIsOpen());
+  };
+
+  const onOptionClicked = (value) => {
+    dispatch(setYear(value));
+
+    dispatch(changeDropDownIsOpen());
+  };
+
+  /// ////////////////////
 
   return (
     <MainContainer>
-      <Year>{year}</Year>
+
+      <DropDownContainer>
+        <DropDownHeader onClick={handleToggle} isOpen={isOpen}>{year}</DropDownHeader>
+        {isOpen && (
+          <DropDownListContainer onClick={handleToggle}>
+            <DropDownList>
+              {availableYears.map((availableYear) => (
+                <ListItem
+                  onClick={() => onOptionClicked(availableYear)}
+                  key={Math.random()}
+                  selected={availableYear === year}
+                >
+                  {availableYear}
+                </ListItem>
+              ))}
+            </DropDownList>
+          </DropDownListContainer>
+        )}
+      </DropDownContainer>
+
       <Grid id="grid" onScroll={onScroll}>
-        {albums[year].map((album) => (
+        {albums.map((album) => (
           <Container key={album.rank}>
             <a href={`${baseUrl}${album.detailUrl}`} target="_blank" rel="noreferrer">
               <ImageContainer>

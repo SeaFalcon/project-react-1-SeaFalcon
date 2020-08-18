@@ -22,7 +22,7 @@ describe('AlbumOfTheYear', () => {
 
   it('renders initial page', () => {
     const { container, getByText } = render((
-      <AlbumOfTheYear albums={currentYearAlbums} year={currentYear} onScroll={handleScroll} />
+      <AlbumOfTheYear albums={currentYearAlbums[currentYear]} year={currentYear} onScroll={handleScroll} />
     ));
 
     expect(container).toHaveTextContent('H.E.A.T');
@@ -32,7 +32,7 @@ describe('AlbumOfTheYear', () => {
 
   it('occurs scroll events', () => {
     const { container } = render((
-      <AlbumOfTheYear albums={currentYearAlbums} year={currentYear} onScroll={handleScroll} />
+      <AlbumOfTheYear albums={currentYearAlbums[currentYear]} year={currentYear} onScroll={handleScroll} />
     ));
 
     const grid = container.querySelector('#grid');

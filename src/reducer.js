@@ -2,7 +2,9 @@ const initialState = {
   albums: {},
   currentYear: new Date().getFullYear(),
   currentPage: 1,
-  currentLimit: 20,
+  currentLimit: 30,
+  availableYears: [],
+  dropDownIsOpen: false,
 };
 
 const reducers = {
@@ -14,6 +16,27 @@ const reducers = {
         ...state.albums,
         [year]: albums,
       },
+    };
+  },
+
+  setAvailableYears(state, { payload: { years } }) {
+    return {
+      ...state,
+      availableYears: years,
+    };
+  },
+
+  setYear(state, { payload: { year } }) {
+    return {
+      ...state,
+      currentYear: year,
+    };
+  },
+
+  changeDropDownIsOpen(state) {
+    return {
+      ...state,
+      dropDownIsOpen: !state.dropDownIsOpen,
     };
   },
 };

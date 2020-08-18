@@ -58,4 +58,8 @@ app.get('/albumoftheyear', (req, res) => {
   res.json(result);
 });
 
+app.get('/yearlist', (req, res) => {
+  res.json(Object.keys(albumInfomations).reverse());
+});
+
 app.listen(PORT, () => { console.log('listening 3000 port...'); });

@@ -17,7 +17,7 @@ export default function AlbumOfTheYearPage() {
 
   useEffect(() => {
     dispatch(loadInitialData({ year, page, limit }));
-  }, []);
+  }, [year]);
 
   return (
     <div>
