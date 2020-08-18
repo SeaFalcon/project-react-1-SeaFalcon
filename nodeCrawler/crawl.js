@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const axios = require('axios');
 const cheerio = require('cheerio');
@@ -100,8 +101,8 @@ async function getAlbumOfTheYear(year, page = 1) {
   }, 100);
 }
 
-const startYear = 2000;
-const endYear = new Date().getFullYear();
+const startYear = process.env.START || 1970;
+const endYear = process.env.END || new Date().getFullYear();
 
 async function doCrawling() {
   for (let i = startYear; i <= endYear; i++) {
@@ -115,7 +116,7 @@ async function doCrawling() {
   }
 
   fs.writeFile(
-    `AlbumOfTheYear[${startYear}-${endYear}].json`, JSON.stringify(albumInfomation), 'utf8',
+    path.resolve(__dirname, `crawling_data/AlbumOfTheYear[${startYear}-${endYear}].json`), JSON.stringify(albumInfomation), 'utf8',
     (err) => {
       if (err) throw err;
       // console.log('complete');

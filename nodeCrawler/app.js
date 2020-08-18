@@ -1,6 +1,6 @@
 const express = require('express');
 
-const albumInfomations = require('./AlbumOfTheYear[1970-2020].json');
+const albumInfomations = require('./crawling_data/AlbumOfTheYear[1970-2020].json');
 
 const app = express();
 

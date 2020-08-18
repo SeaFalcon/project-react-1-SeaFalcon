@@ -16,5 +16,5 @@ node_modules
 ## Jest
 coverage
 
-## Album Of The Years JSON File
-.json
+## Crawling JSON File
+nodeCrawler/crawling_data
