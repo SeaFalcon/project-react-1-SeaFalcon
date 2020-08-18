@@ -2,9 +2,9 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
-// import { Link } from 'react-router-dom';
-
-// import albums from '../fixtures/albums';
+const MainContainer = styled.div({
+  // height: '120vh',
+});
 
 const Grid = styled.div({
   padding: '20px',
@@ -12,6 +12,9 @@ const Grid = styled.div({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fill, 200px)',
   gridGap: '25px',
+  overflow: 'auto',
+  height: '67vh',
+  justifyContent: 'space-evenly',
 });
 
 const Container = styled.div({
@@ -69,13 +72,13 @@ const Year = styled.div({
   fontSize: '1.5em',
 });
 
-export default function AlbumOfTheYear({ albums, year }) {
+export default function AlbumOfTheYear({ albums, year, onScroll }) {
   const baseUrl = 'https://www.metalkingdom.net';
 
   return (
-    <div>
+    <MainContainer>
       <Year>{year}</Year>
-      <Grid>
+      <Grid id="grid" onScroll={onScroll}>
         {albums[year].map((album) => (
           <Container key={album.rank}>
             <a href={`${baseUrl}${album.detailUrl}`} target="_blank" rel="noreferrer">
@@ -104,6 +107,6 @@ export default function AlbumOfTheYear({ albums, year }) {
           </Container>
         ))}
       </Grid>
-    </div>
+    </MainContainer>
   );
 }
