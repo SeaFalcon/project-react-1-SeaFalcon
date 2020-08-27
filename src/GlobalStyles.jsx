@@ -17,6 +17,24 @@ const GlobalStyles = createGlobalStyle`
         color:white;
         padding-top:50px;
     }
+
+    /* Google Chrome (Windows) scrollbar styles */
+    ::-webkit-scrollbar {
+        width: 20px;
+        background: transparent;
+    }
+    ::-webkit-scrollbar-button {
+        display: none;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 100px;
+        background: #aaaaaacc;
+        background-clip: content-box;
+        border: solid 8px transparent;
+    }
 `;
 
 export default GlobalStyles;

@@ -1,4 +1,5 @@
 import { fetchAlbums, fetchAvailableYears } from './services/api';
+
 import { isEmptyObject } from './utils';
 
 export function setAlbums({ year, albums }) {
@@ -88,5 +89,19 @@ export function loadMoreData() {
     if (albums.find((album) => +album.rank === albumCount)) {
       dispatch(updateAvailableYearsEndOfPage(page + 1));
     }
+  };
+}
+
+export function setAlbumId(albumId) {
+  return {
+    type: 'setAlbumId',
+    payload: { albumId },
+  };
+}
+
+export function setUserInformation(userInformation) {
+  return {
+    type: 'setUserInformation',
+    payload: { userInformation },
   };
 }

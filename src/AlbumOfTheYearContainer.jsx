@@ -17,6 +17,9 @@ export default function AlbumOfTheYearContainer() {
   const availableYears = useSelector(get('availableYears'));
   const isOpen = useSelector(get('dropDownIsOpen'));
 
+  const albumId = useSelector(get('albumId'));
+  const userInformation = useSelector(get('userInformation'));
+
   function handleScroll(e) {
     const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
 
@@ -33,6 +36,8 @@ export default function AlbumOfTheYearContainer() {
         availableYears={availableYears}
         onScroll={handleScroll}
         isOpen={isOpen}
+        albumId={albumId}
+        accessToken={userInformation.accessToken}
       />
     );
   }

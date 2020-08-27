@@ -5,9 +5,33 @@ const initialState = {
   currentLimit: 30,
   availableYears: {},
   dropDownIsOpen: false,
+  albumId: '1DFixLWuPkv3KT3TnV35m3',
+  userInformation: {
+    accessToken: '',
+    name: '',
+    email: '',
+    id: '',
+    image: '',
+  },
 };
 
 const reducers = {
+  setUserInformation(state, { payload: { userInformation } }) {
+    localStorage.setItem('userInformation', JSON.stringify(userInformation));
+
+    return {
+      ...state,
+      userInformation,
+    };
+  },
+
+  setAlbumId(state, { payload: { albumId } }) {
+    return {
+      ...state,
+      albumId,
+    };
+  },
+
   setAlbums(state, { payload: { year, albums } }) {
     return {
       ...state,

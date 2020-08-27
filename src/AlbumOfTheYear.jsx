@@ -2,10 +2,25 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
-import { setYear, changeDropDownIsOpen, setPage } from './actions';
+import {
+  setYear, changeDropDownIsOpen, setPage, setAlbumId,
+} from './actions';
+
+import { month, removeSpecialCharacters } from './utils';
 
 const MainContainer = styled.div({
   // height: '120vh',
+});
+
+const ContainerBody = styled.div({
+  display: 'flex',
+});
+
+const Side = styled.footer({
+  // position: 'fixed',
+  '& iframe': {
+    height: '80vh',
+  },
 });
 
 const Grid = styled.div({
@@ -16,6 +31,8 @@ const Grid = styled.div({
   gridGap: '25px',
   overflow: 'auto',
   height: '80vh',
+  // width: '80vw',
+  width: '100%',
   justifyContent: 'space-evenly',
 });
 
@@ -132,7 +149,7 @@ const ListItem = styled.li((props) => ({
 }));
 
 export default function AlbumOfTheYear({
-  albums, year, availableYears, onScroll, isOpen,
+  albums, year, availableYears, onScroll, isOpen, albumId, accessToken,
 }) {
   const baseUrl = 'https://www.metalkingdom.net';
 
@@ -152,6 +169,56 @@ export default function AlbumOfTheYear({
     dispatch(setPage(page));
 
     dispatch(changeDropDownIsOpen());
+  };
+
+  const handleClick = async (event, artist, album, date) => {
+    event.preventDefault();
+
+    let url = '';
+
+    const splittedDate = date.split(' ');
+
+    const formattedAlbum = album.replace('[Live]', '').trim();
+
+    let formattedDate = '';
+
+    if (splittedDate.length < 2) {
+      url = `https://api.spotify.com/v1/search?q=${artist} ${removeSpecialCharacters(formattedAlbum)} year:${splittedDate[0]}&type=album&limit=50`;
+    } else {
+      const day = splittedDate[1].replace(',', '').length < 2 ? `0${splittedDate[1].replace(',', '')}` : splittedDate[1].replace(',', '');
+      formattedDate = `${splittedDate[2]}-${month[splittedDate[0]]}-${day}`;
+      url = `https://api.spotify.com/v1/search?q=${artist} ${removeSpecialCharacters(formattedAlbum)} year:${splittedDate[2]}&type=album&limit=50`;
+    }
+
+    console.log(`https://api.spotify.com/v1/search?q=${artist} ${formattedAlbum} year:${splittedDate[2]}&type=album&limit=50`);
+
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      json: true,
+    });
+
+    const res = await response.json();
+    console.log(res);
+    const { albums: { items } } = res;
+
+    console.log(items);
+    if (items.length > 1) {
+      console.log('검색 결과가 2개 이상', formattedDate);
+      const result = items.filter(
+        (item) => item.release_date === formattedDate
+          || item.artists[0].name === artist
+          || item.name === formattedAlbum,
+      );
+
+      console.log(result);
+      dispatch(setAlbumId(result[0].id));
+      return;
+    }
+
+    dispatch(setAlbumId(items[0].id));
   };
 
   return (
@@ -176,35 +243,61 @@ export default function AlbumOfTheYear({
         )}
       </DropDownContainer>
 
-      <Grid id="grid" onScroll={onScroll}>
-        {albums.map((album) => (
-          <Container key={album.rank}>
-            <a href={`${baseUrl}${album.detailUrl}`} target="_blank" rel="noreferrer">
-              <ImageContainer>
-                <Image imageUrl={`${baseUrl}${album.coverArtThumbNail}`} />
-                <Rating>
-                  <p>
-                    Rank:
+      <ContainerBody>
+        <Side>
+          <iframe
+            src={`https://open.spotify.com/embed/album/${albumId}`}
+            width="300"
+            height="80"
+            frameBorder="0"
+            allowtransparency="true"
+            allow="encrypted-media"
+            title="web-player"
+          />
+        </Side>
+
+        <Grid id="grid" onScroll={onScroll}>
+          {albums.map((album) => (
+            <Container key={album.rank}>
+              <a href={`${baseUrl}${album.detailUrl}`} target="_blank" rel="noreferrer" onClick={(event) => handleClick(event, album.artist, album.album, album.releaseDate)}>
+                <ImageContainer>
+                  <Image imageUrl={`${baseUrl}${album.coverArtThumbNail}`} />
+                  <Rating>
+                    <p>
+                      Rank:
+                      {' '}
+                      {album.rank}
+                    </p>
+                    <p>
+                      {album.releaseDate}
+                    </p>
+                    <span role="img" aria-label="rating">
+                      ⭐️
+                    </span>
                     {' '}
-                    {album.rank}
-                  </p>
-                  <p>
-                    {album.releaseDate}
-                  </p>
-                  <span role="img" aria-label="rating">
-                    ⭐️
-                  </span>
-                  {' '}
-                  {album.rating}
-                  /100
-                </Rating>
-              </ImageContainer>
-              <Artist>{album.artist}</Artist>
-              <Album>{album.album}</Album>
-            </a>
-          </Container>
-        ))}
-      </Grid>
+                    {album.rating}
+                    /100
+                  </Rating>
+                </ImageContainer>
+                <Artist>{album.artist}</Artist>
+                <Album>{album.album}</Album>
+              </a>
+            </Container>
+          ))}
+        </Grid>
+
+        {/* <Side>
+          <iframe
+            src={`https://open.spotify.com/embed/album/${albumId}`}
+            width="300"
+            height="80"
+            frameBorder="0"
+            allowtransparency="true"
+            allow="encrypted-media"
+            title="web-player"
+          />
+        </Side> */}
+      </ContainerBody>
     </MainContainer>
   );
 }

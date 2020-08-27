@@ -1,7 +1,10 @@
 import React from 'react';
 
 import styled from '@emotion/styled';
+
 import { Link, withRouter } from 'react-router-dom';
+
+import Login from './Login';
 
 const Header = styled.div({
   color: 'white',
@@ -27,6 +30,9 @@ const Item = styled.li((props) => ({
   height: '50px',
   borderBottom: `3px solid ${props.selected ? '#3498db' : 'transparent'}`,
   transition: 'border-bottom 0.5s ease-in-out',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 }));
 
 const SLink = styled(Link)({
@@ -35,6 +41,15 @@ const SLink = styled(Link)({
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '1.5em',
+  '&:hover': {
+    cursor: 'pointer',
+    color: 'rgba(255,255,255,0.5)',
+    transition: 'color 0.3s ease-in-out',
+  },
+  '& span': {
+    position: 'absolute',
+    right: '30px',
+  },
 });
 
 export default withRouter(({ location: { pathname } }) => (
@@ -45,6 +60,9 @@ export default withRouter(({ location: { pathname } }) => (
       </Item>
       <Item selected={pathname === '/search'}>
         <SLink to="/search">Search</SLink>
+      </Item>
+      <Item>
+        <Login />
       </Item>
     </List>
   </Header>
