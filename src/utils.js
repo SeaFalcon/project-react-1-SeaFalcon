@@ -24,6 +24,20 @@ export function getHashParams() {
   return hashParams;
 }
 
+export function getSearchParams() {
+  const hashParams = {};
+  let e;
+  const r = /([^&;=]+)=?([^&;]*)/g;
+  const q = window.location.search.substring(1);
+
+  e = r.exec(q);
+  while (e) {
+    hashParams[e[1]] = decodeURIComponent(e[2]);
+    e = r.exec(q);
+  }
+  return hashParams;
+}
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -40,9 +54,9 @@ export function generateRandomString(length) {
 }
 
 export async function requestSpotifyUserInfomation({ accessToken, state, storedState }) {
-  if (accessToken && (state == null || state !== storedState)) {
-    throw new Error('There was an error during the authentication');
-  }
+  // if (accessToken && (state == null || state !== storedState)) {
+  //   throw new Error('There was an error during the authentication');
+  // }
 
   const response = await fetch('https://api.spotify.com/v1/me', {
     headers: {
@@ -51,6 +65,58 @@ export async function requestSpotifyUserInfomation({ accessToken, state, storedS
   });
 
   const result = await response.json();
+
+  return result;
+}
+
+export async function requestSpotifyAccessToken({ code }) {
+  const clientId = '396ba6712d884275a62181d646dd0125'; // Your client id
+  const clientSecret = '0c26e2f3bf09430aba9222b44ae3716d'; // Your secret
+  const redirectUri = `http://localhost:${8080}`; // Your redirect uri
+
+  const url = 'https://accounts.spotify.com/api/token';
+
+  const authOptions = {
+    method: 'POST',
+    headers: {
+      // Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+      Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `code=${code}&redirect_uri=${redirectUri}&grant_type=authorization_code`,
+  };
+
+  const response = await fetch(url, authOptions);
+  const result = await response.json();
+
+  console.log(result);
+
+  const hash = Object.entries(result).map((queryString) => queryString.join('=')).join('&');
+
+  window.location.assign(`/#${hash}`);
+
+  // return result;
+}
+
+export async function requestSpotifyRefreshToken({ refreshToken }) {
+  const clientId = '396ba6712d884275a62181d646dd0125'; // Your client id
+  const clientSecret = '0c26e2f3bf09430aba9222b44ae3716d'; // Your secret
+
+  const url = 'https://accounts.spotify.com/api/token';
+
+  const authOptions = {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+  };
+
+  const response = await fetch(url, authOptions);
+  const result = await response.json();
+
+  console.log(result);
 
   return result;
 }

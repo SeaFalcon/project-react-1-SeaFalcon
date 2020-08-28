@@ -10,7 +10,9 @@ import Header from './Header';
 import Search from './Search';
 import GlobalStyles from './GlobalStyles';
 import AlbumOfTheYearPage from './AlbumOfTheYearPage';
-import Side from './Side';
+import ContentHeader from './ContentHeader';
+import Player from './Player';
+
 import { setUserInformation } from './actions';
 
 const Content = styled.div({
@@ -20,6 +22,7 @@ const Content = styled.div({
 export default function App() {
   const dispatch = useDispatch();
 
+  // console.log(localStorage.getItem('userInformation'));
   const userInformation = JSON.parse(localStorage.getItem('userInformation'));
 
   if (userInformation && userInformation.accessToken) {
@@ -30,13 +33,14 @@ export default function App() {
     <div>
       <BrowserRouter>
         <Header />
-        {/* <Content> */}
-        {/* <Side /> */}
-        <Switch>
-          <Route exact path="/" component={AlbumOfTheYearPage} />
-          <Route path="/search" component={Search} />
-        </Switch>
-        {/* </Content> */}
+        <ContentHeader />
+        <Content>
+          <Player />
+          <Switch>
+            <Route exact path="/" component={AlbumOfTheYearPage} />
+            <Route path="/search" component={Search} />
+          </Switch>
+        </Content>
       </BrowserRouter>
       <GlobalStyles />
     </div>

@@ -2,14 +2,20 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 
+import { useSelector } from 'react-redux';
+
+import { get } from './utils';
+
 const Player = styled.iframe({
   height: '80vh',
 });
 
-export default function Side() {
+export default () => {
+  const albumId = useSelector(get('albumId'));
+
   return (
     <Player
-      src={`https://open.spotify.com/embed/album/${'5xOUBZEXwpTiuH4LEror9h'}`}
+      src={albumId}
       width="300"
       height="80"
       frameBorder="0"
@@ -18,4 +24,4 @@ export default function Side() {
       title="web-player"
     />
   );
-}
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
@@ -10,10 +10,12 @@ import { month, removeSpecialCharacters } from './utils';
 
 const MainContainer = styled.div({
   // height: '120vh',
+  width: '100%',
 });
 
 const ContainerBody = styled.div({
   display: 'flex',
+  width: '100%',
 });
 
 const Side = styled.footer({
@@ -31,8 +33,8 @@ const Grid = styled.div({
   gridGap: '25px',
   overflow: 'auto',
   height: '80vh',
-  // width: '80vw',
-  width: '100%',
+  width: 'calc(100vw - 300px)',
+  // width: '100%',
   justifyContent: 'space-evenly',
 });
 
@@ -172,7 +174,7 @@ export default function AlbumOfTheYear({
   };
 
   const handleClick = async (event, artist, album, date) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     let url = '';
 
@@ -193,6 +195,14 @@ export default function AlbumOfTheYear({
     console.log(`https://api.spotify.com/v1/search?q=${artist} ${formattedAlbum} year:${splittedDate[2]}&type=album&limit=50`);
 
     const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      json: true,
+    });
+
+    console.log({
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
@@ -221,10 +231,14 @@ export default function AlbumOfTheYear({
     dispatch(setAlbumId(items[0].id));
   };
 
+  useEffect(() => {
+    if (!albumId) { handleClick(null, albums[0].artist, albums[0].album, albums[0].releaseDate); }
+  }, []);
+
   return (
     <MainContainer>
 
-      <DropDownContainer>
+      {/* <DropDownContainer>
         <DropDownHeader onClick={handleToggle} isOpen={isOpen}>{year}</DropDownHeader>
         {isOpen && (
           <DropDownListContainer>
@@ -241,10 +255,10 @@ export default function AlbumOfTheYear({
             </DropDownList>
           </DropDownListContainer>
         )}
-      </DropDownContainer>
+      </DropDownContainer> */}
 
       <ContainerBody>
-        <Side>
+        {/* <Side>
           <iframe
             src={`https://open.spotify.com/embed/album/${albumId}`}
             width="300"
@@ -254,7 +268,7 @@ export default function AlbumOfTheYear({
             allow="encrypted-media"
             title="web-player"
           />
-        </Side>
+        </Side> */}
 
         <Grid id="grid" onScroll={onScroll}>
           {albums.map((album) => (

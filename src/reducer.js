@@ -5,7 +5,7 @@ const initialState = {
   currentLimit: 30,
   availableYears: {},
   dropDownIsOpen: false,
-  albumId: '1DFixLWuPkv3KT3TnV35m3',
+  albumId: '',
   userInformation: {
     accessToken: '',
     name: '',
@@ -13,6 +13,8 @@ const initialState = {
     id: '',
     image: '',
   },
+  searchQuery: '',
+  searchResult: null,
 };
 
 const reducers = {
@@ -25,10 +27,37 @@ const reducers = {
     };
   },
 
+  setAccessToken(state, { payload: { accessToken } }) {
+    const userInformation = JSON.parse(localStorage.getItem('userInformation'));
+    console.log(accessToken);
+    userInformation.accessToken = accessToken;
+
+    localStorage.setItem('userInformation', JSON.stringify(userInformation));
+
+    return {
+      ...state,
+      userInformation,
+    };
+  },
+
+  setSearchQuery(state, { payload: { searchQuery } }) {
+    return {
+      ...state,
+      searchQuery,
+    };
+  },
+
+  setSearchResult(state, { payload: { searchResult } }) {
+    return {
+      ...state,
+      searchResult,
+    };
+  },
+
   setAlbumId(state, { payload: { albumId } }) {
     return {
       ...state,
-      albumId,
+      albumId: `https://open.spotify.com/embed/album/${albumId}`,
     };
   },
 

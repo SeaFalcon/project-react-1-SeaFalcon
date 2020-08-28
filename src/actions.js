@@ -105,3 +105,24 @@ export function setUserInformation(userInformation) {
     payload: { userInformation },
   };
 }
+
+export function setAccessToken(accessToken) {
+  return {
+    type: 'setAccessToken',
+    payload: { accessToken },
+  };
+}
+
+export function setSearchQuery(searchQuery) {
+  return {
+    type: 'setSearchQuery',
+    payload: { searchQuery },
+  };
+}
+
+export function setSearchResult(searchResult) {
+  return {
+    type: 'setSearchResult',
+    payload: { searchResult },
+  };
+}
