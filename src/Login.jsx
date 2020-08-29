@@ -60,15 +60,13 @@ export default () => {
 
   const stateKey = 'spotify_auth_state';
 
-  console.log(window.location);
+  const redirectUri = useSelector(get('redirectUri'));
 
   const {
     access_token: accessToken,
     refresh_token: refreshToken,
     state: receiveState,
   } = getHashParams();
-
-  console.log(getHashParams());
 
   const {
     code,
@@ -100,14 +98,14 @@ export default () => {
     }
 
     if (code) {
-      requestSpotifyAccessToken({ code });
+      requestSpotifyAccessToken({ code, location: redirectUri.split('?')[0] });
     }
   }, []);
 
   function handleClickLogin() {
     const clientId = '396ba6712d884275a62181d646dd0125'; // Your client id
     const scope = 'user-read-private user-read-email';
-    const redirectUri = window.location.href; // 'http://localhost:8080'; // Your redirect uri
+    // const redirectUri = window.location.href; // 'http://localhost:8080'; // Your redirect uri
     const state = generateRandomString(16);
 
     localStorage.setItem(stateKey, state);

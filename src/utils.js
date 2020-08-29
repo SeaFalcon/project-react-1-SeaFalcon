@@ -53,7 +53,7 @@ export function generateRandomString(length) {
   return text;
 }
 
-export async function requestSpotifyUserInfomation({ accessToken, state, storedState }) {
+export async function requestSpotifyUserInfomation({ accessToken }) {
   // if (accessToken && (state == null || state !== storedState)) {
   //   throw new Error('There was an error during the authentication');
   // }
@@ -69,10 +69,10 @@ export async function requestSpotifyUserInfomation({ accessToken, state, storedS
   return result;
 }
 
-export async function requestSpotifyAccessToken({ code }) {
+export async function requestSpotifyAccessToken({ code, location }) {
   const clientId = '396ba6712d884275a62181d646dd0125'; // Your client id
   const clientSecret = '0c26e2f3bf09430aba9222b44ae3716d'; // Your secret
-  const redirectUri = window.location.href; // `http://localhost:${8080}`; // Your redirect uri
+  const redirectUri = location; // `http://localhost:${8080}`; // Your redirect uri
 
   const url = 'https://accounts.spotify.com/api/token';
 
@@ -93,7 +93,8 @@ export async function requestSpotifyAccessToken({ code }) {
 
   const hash = Object.entries(result).map((queryString) => queryString.join('=')).join('&');
 
-  window.location.assign(`/#${hash}`);
+  // window.location.assign(`/#${hash}`);
+  window.location.assign(`${redirectUri}#${hash}`);
 
   // return result;
 }

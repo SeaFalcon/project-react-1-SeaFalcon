@@ -15,6 +15,7 @@ const initialState = {
   },
   searchQuery: '',
   searchResult: null,
+  redirectUri: window.location.href,
 };
 
 const reducers = {
