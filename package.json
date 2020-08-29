@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
     "start": "webpack-dev-server",
     "server": "PORT=3000 node ./nodeCrawler/app.js",
     "crawling": "START=1970 END=2020 node ./nodeCrawler/crawl.js",
