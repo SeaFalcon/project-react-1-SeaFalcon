@@ -20,6 +20,9 @@ Spotify API를 연동하여 밴드와 앨범 정보를 보여주고 Spotify 링�
 5. 예시화면
 ![ezgif com-optimize](https://user-images.githubusercontent.com/8149376/91641443-6ecddf80-ea5f-11ea-9872-e7b3e7f97537.gif)
 
+6. 배포 URL
+https://gh-pages.d5febvvpl2u5w.amplifyapp.com/
+
 # 서버
 
 ## 설치하기
