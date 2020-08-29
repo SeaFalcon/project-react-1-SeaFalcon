@@ -1,5 +1,5 @@
 const devServer = 'http://localhost:3000';
-const prodServer = 'https://heavymetal-universe.herokuapp.com/';
+const prodServer = 'https://heavymetal-universe.herokuapp.com';
 
 export async function fetchAlbums({ year, page, limit } = {}) {
   const url = `${prodServer}/albumoftheyear?year=${year}&page=${page}&limit=${limit}`;

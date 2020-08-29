@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/webpack",
+    "build": "webpack --mode production --config webpack.config.js",
+    "deploy": "gh-pages -d dist",
     "start": "webpack-dev-server",
     "server": "PORT=3000 node ./nodeCrawler/app.js",
     "crawling": "START=1970 END=2020 node ./nodeCrawler/crawl.js",
@@ -22,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/CodeSoom/project-react-1-SeaFalcon/issues"
   },
-  "homepage": "https://github.com/CodeSoom/project-react-1-SeaFalcon#readme",
+  "homepage": "https://CodeSoom.github.io/project-react-1-SeaFalcon",
   "devDependencies": {
     "@babel/core": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
@@ -46,6 +47,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "gh-pages": "^3.1.0",
     "jest-plugin-context": "^2.9.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
