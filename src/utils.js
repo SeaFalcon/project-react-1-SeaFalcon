@@ -72,7 +72,7 @@ export async function requestSpotifyUserInfomation({ accessToken, state, storedS
 export async function requestSpotifyAccessToken({ code }) {
   const clientId = '396ba6712d884275a62181d646dd0125'; // Your client id
   const clientSecret = '0c26e2f3bf09430aba9222b44ae3716d'; // Your secret
-  const redirectUri = `http://localhost:${8080}`; // Your redirect uri
+  const redirectUri = window.location.href; // `http://localhost:${8080}`; // Your redirect uri
 
   const url = 'https://accounts.spotify.com/api/token';
 

@@ -60,6 +60,8 @@ export default () => {
 
   const stateKey = 'spotify_auth_state';
 
+  console.log(window.location);
+
   const {
     access_token: accessToken,
     refresh_token: refreshToken,
@@ -105,7 +107,7 @@ export default () => {
   function handleClickLogin() {
     const clientId = '396ba6712d884275a62181d646dd0125'; // Your client id
     const scope = 'user-read-private user-read-email';
-    const redirectUri = 'http://localhost:8080'; // Your redirect uri
+    const redirectUri = window.location.href; // 'http://localhost:8080'; // Your redirect uri
     const state = generateRandomString(16);
 
     localStorage.setItem(stateKey, state);
